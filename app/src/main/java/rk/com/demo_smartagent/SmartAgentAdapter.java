@@ -230,7 +230,7 @@ public class SmartAgentAdapter extends RecyclerView.Adapter<SmartAgentAdapter.My
                     public void onScanCompleted(String path, Uri uri) {
 
                         System.out.println("path_is"+path);
-                     
+
 
                         Log.i("ExternalStorage", "Scanned " + path + ":");
                         Log.i("ExternalStorage", "-> uri=" + uri);
@@ -239,6 +239,7 @@ public class SmartAgentAdapter extends RecyclerView.Adapter<SmartAgentAdapter.My
 
 
     }
+
     void downloadFile(){
 
 
@@ -288,6 +289,12 @@ public class SmartAgentAdapter extends RecyclerView.Adapter<SmartAgentAdapter.My
 
             //this is the total size of the file which we are downloading
            int totalSize = urlConnection.getContentLength();
+
+
+           if(totalSize == 0){
+
+               Toast.makeText(mcontext,"downloaded file does not match",Toast.LENGTH_SHORT).show();
+           }
 
 
             //create a buffer...

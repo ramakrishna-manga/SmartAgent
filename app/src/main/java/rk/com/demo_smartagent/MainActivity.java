@@ -51,6 +51,8 @@ public class MainActivity extends AppCompatActivity {
 
     private SmartAgentAdapter adapter;
 
+
+
     ProgressDialog pDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,26 +68,7 @@ public class MainActivity extends AppCompatActivity {
         sizeInBytes_list = new ArrayList<String>();
 
 
-        if (Build.VERSION.SDK_INT >= 23) {
 
-
-            if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
-                    != PackageManager.PERMISSION_GRANTED) {
-                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.ACCESS_NETWORK_STATE, Manifest.permission.INTERNET},
-                        1);
-
-
-                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
-                // app-defined int constant
-                System.out.println("allow");
-
-                return;
-            } else {
-                System.out.println("done");
-            }
-
-
-        }
 
         pDialog = new ProgressDialog(this);
         pDialog.setMessage("Loading...");
@@ -203,131 +186,4 @@ pDialog.hide();
         mRequestQueue.add(jsonObjReq);
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        if (Build.VERSION.SDK_INT >= 23) {
-
-            if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
-                    == PackageManager.PERMISSION_GRANTED) {
-                pDialog = new ProgressDialog(this);
-                pDialog.setMessage("Loading...");
-                pDialog.setCancelable(false);
-                pDialog.show();
-
-
-                mRequestQueue = Volley.newRequestQueue(this);
-
-                JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
-                        url, null,
-                        new Response.Listener<JSONObject>() {
-
-                            @Override
-                            public void onResponse(JSONObject response) {
-                                pDialog.hide();
-
-                                try {
-                                    JSONArray jsonArray=response.getJSONArray("dependencies");
-
-
-                                    for(int i=0;i<jsonArray.length();i++){
-
-                                        JSONObject jsonObject=jsonArray.getJSONObject(i);
-
-
-                                        if(jsonObject.has("id")){
-                                            id=jsonObject.getString("id");
-                                            id_list.add(id);
-                                        }else{
-
-                                            id_list.add("");
-                                        }
-
-                                        if(jsonObject.has("name")){
-                                            name=jsonObject.getString("name");
-                                            name_list.add(name);
-                                        }else{
-
-                                            name_list.add("");
-                                        }
-
-                                        if(jsonObject.has("type")){
-                                            type=jsonObject.getString("type");
-                                            type_list.add(type);
-                                        }else{
-                                            type_list.add("");
-                                        }
-                                        if(jsonObject.has("sizeInBytes")){
-
-                                            sizeInBytes=jsonObject.getString("sizeInBytes");
-                                            sizeInBytes_list.add(sizeInBytes);
-                                        }else{
-                                            sizeInBytes_list.add("");
-                                        }
-
-                                        if(jsonObject.has("cdn_path")){
-
-                                            cdn_path=jsonObject.getString("cdn_path");
-                                            cdn_path_list.add(cdn_path);
-                                        }else{
-                                            cdn_path_list.add("");
-                                        }
-
-
-                                    }
-
-
-
-                                    for (int j = 0; j < id_list.size(); j++) {
-
-                                        id1 = id_list.get(j);
-                                        name1 = name_list.get(j);
-                                        type1 = type_list.get(j);
-                                        cdn_path1 = cdn_path_list.get(j);
-                                        size_bytes1 = sizeInBytes_list.get(j);
-
-
-                                        SmartAgentPojo smartAgentPojo = new SmartAgentPojo(id1,name1,type1,cdn_path1,size_bytes1);
-
-                                        smartAgentPojoList.add(smartAgentPojo);
-
-                                        adapter = new SmartAgentAdapter(smartAgentPojoList);
-                                        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
-                                        recyclerView.setLayoutManager(layoutManager);
-                                        recyclerView.setItemAnimator(new DefaultItemAnimator());
-                                        recyclerView.setAdapter(adapter);
-
-
-
-
-                                    }
-
-
-
-
-
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-
-
-                                Log.d(TAG, response.toString());
-
-                            }
-                        }, new Response.ErrorListener() {
-
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        VolleyLog.d(TAG, "Error: " + error.getMessage());
-                        pDialog.hide();
-                    }
-                });
-
-                mRequestQueue.add(jsonObjReq);
-
-            }
-        }
-
-    }
 }
