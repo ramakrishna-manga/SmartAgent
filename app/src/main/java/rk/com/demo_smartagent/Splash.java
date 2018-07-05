@@ -20,6 +20,7 @@ public class Splash extends AppCompatActivity {
 
 
 
+
         if (Build.VERSION.SDK_INT >= 23) {
 
 
@@ -37,6 +38,24 @@ public class Splash extends AppCompatActivity {
             } else {
                 System.out.println("done");
             }
+
+
+        }else{
+
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+
+                    Intent mainIntent = new Intent(Splash.this,MainActivity.class);
+
+                    Splash.this.startActivity(mainIntent);
+
+                    overridePendingTransition(R.anim.slide_in_left,
+                            R.anim.slide_out_left);
+                    Splash.this.finish();
+                }
+            }, SPLASH_DISPLAY_LENGTH);
+
 
 
         }
@@ -62,7 +81,6 @@ public class Splash extends AppCompatActivity {
 
                         Intent mainIntent = new Intent(Splash.this,MainActivity.class);
 
-                        mainIntent.putExtra("abc",123);
                         Splash.this.startActivity(mainIntent);
 
                         overridePendingTransition(R.anim.slide_in_left,
