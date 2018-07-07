@@ -58,6 +58,8 @@ public class SmartAgentAdapter extends RecyclerView.Adapter<SmartAgentAdapter.My
 
     private Context mcontext;
 
+    Context context;
+
     String videourl;
     public class MyViewHolder extends RecyclerView.ViewHolder {
         ImageView imageView;
@@ -97,9 +99,11 @@ public class SmartAgentAdapter extends RecyclerView.Adapter<SmartAgentAdapter.My
         return new MyViewHolder(itemView);
     }
 
-    public SmartAgentAdapter(List<SmartAgentPojo> smartAgentPojoList) {
+    public SmartAgentAdapter(List<SmartAgentPojo> smartAgentPojoList,Context context) {
 
         this.smartAgentPojoList = smartAgentPojoList;
+
+        this.context=context;
 
 
     }
@@ -231,6 +235,7 @@ public class SmartAgentAdapter extends RecyclerView.Adapter<SmartAgentAdapter.My
 
                         System.out.println("path_is"+path);
 
+                        Toast.makeText(context,path,Toast.LENGTH_LONG).show();
 
                         Log.i("ExternalStorage", "Scanned " + path + ":");
                         Log.i("ExternalStorage", "-> uri=" + uri);

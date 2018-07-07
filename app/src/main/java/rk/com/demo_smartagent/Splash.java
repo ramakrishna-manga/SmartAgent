@@ -19,34 +19,11 @@ public class Splash extends AppCompatActivity {
         setContentView(R.layout.splash);
 
 
-
-
-        if (Build.VERSION.SDK_INT >= 23) {
-
-
-            if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
-                    != PackageManager.PERMISSION_GRANTED) {
-                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.ACCESS_NETWORK_STATE, Manifest.permission.INTERNET},
-                        1);
-
-
-                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
-                // app-defined int constant
-                System.out.println("allow");
-
-                return;
-            } else {
-                System.out.println("done");
-            }
-
-
-        }else{
-
-            new Handler().postDelayed(new Runnable() {
+         new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
 
-                    Intent mainIntent = new Intent(Splash.this,MainActivity.class);
+                    Intent mainIntent = new Intent(Splash.this, MainActivity.class);
 
                     Splash.this.startActivity(mainIntent);
 
@@ -57,44 +34,10 @@ public class Splash extends AppCompatActivity {
             }, SPLASH_DISPLAY_LENGTH);
 
 
-
         }
-
-
 
 
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        if (Build.VERSION.SDK_INT >= 23) {
-
-            if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
-                    == PackageManager.PERMISSION_GRANTED) {
 
 
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-
-                        Intent mainIntent = new Intent(Splash.this,MainActivity.class);
-
-                        Splash.this.startActivity(mainIntent);
-
-                        overridePendingTransition(R.anim.slide_in_left,
-                                R.anim.slide_out_left);
-                        Splash.this.finish();
-                    }
-                }, SPLASH_DISPLAY_LENGTH);
-
-
-            }
-        }
-
-
-
-    }
-
-}
