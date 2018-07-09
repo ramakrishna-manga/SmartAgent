@@ -342,21 +342,6 @@ LinearLayout activity_main;
                                             size_bytes1 = sizeInBytes_list.get(j);
 
 
-                                            if(cdn_path1.contains(".jpg")){
-
-                                                try {
-                                                    URL url = new URL(cdn_path1);
-                                                    image_bitmap = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-
-                                                    saveImageToExternalStorage(image_bitmap);
-
-                                                } catch(IOException e) {
-                                                    System.out.println(e);
-                                                }
-
-                                            }
-
-
                                             SmartAgentPojo smartAgentPojo = new SmartAgentPojo(id1, name1, type1, cdn_path1, size_bytes1);
 
                                             smartAgentPojoList.add(smartAgentPojo);
@@ -405,45 +390,5 @@ LinearLayout activity_main;
         return networkInfo != null && networkInfo.isConnected();
     }
 
-    private void saveImageToExternalStorage(Bitmap finalBitmap) {
-        String root = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).toString();
-        File myDir = new File(root + "/saved_images_1");
-        myDir.mkdirs();
-        Random generator = new Random();
-        int n = 10000;
-        n = generator.nextInt(n);
-        String fname = "Image-" + n + ".jpg";
-        File file = new File(myDir, fname);
-        if (file.exists())
-            file.delete();
-        try {
-            FileOutputStream out = new FileOutputStream(file);
-            finalBitmap.compress(Bitmap.CompressFormat.JPEG, 90, out);
-            out.flush();
-            out.close();
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-
-
-        // Tell the media scanner about the new file so that it is
-        // immediately available to the user.
-        MediaScannerConnection.scanFile(getApplicationContext(), new String[]{file.toString()}, null,
-                new MediaScannerConnection.OnScanCompletedListener() {
-                    public void onScanCompleted(String path, Uri uri) {
-
-                         String image_local_path=path;
-
-
-                        System.out.println("path_is"+path);
-
-                        Log.i("ExternalStorage", "Scanned " + path + ":");
-                        Log.i("ExternalStorage", "-> uri=" + uri);
-                    }
-                });
-
-
-    }
 
 }

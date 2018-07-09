@@ -57,10 +57,12 @@ public class SmartAgentAdapter extends RecyclerView.Adapter<SmartAgentAdapter.My
     private List<SmartAgentPojo> smartAgentPojoList;
 
     private Context mcontext;
-
+    long length,length1;
     Context context;
 
     String videourl;
+
+    String imagepath;
     public class MyViewHolder extends RecyclerView.ViewHolder {
         ImageView imageView;
         TextView idd, name, type, cdn_path, size_byte;
@@ -168,7 +170,19 @@ public class SmartAgentAdapter extends RecyclerView.Adapter<SmartAgentAdapter.My
         holder.cdn_path.setText("Path : " + smartAgentPojo.getCdn_path());
 
 
-        holder.size_byte.setText("Size : " + smartAgentPojo.getSize_byte());
+        int size= Integer.parseInt(smartAgentPojo.getSize_byte().toString());
+
+        holder.size_byte.setText("Size : " + size/1024 +" KB");
+
+
+        if (size == length){
+
+          Toast.makeText(mcontext,"Size is equal",Toast.LENGTH_LONG).show();
+        }else{
+
+            Toast.makeText(mcontext,"Size is not equal",Toast.LENGTH_LONG).show();
+        }
+
 
 
     }
@@ -214,11 +228,20 @@ public class SmartAgentAdapter extends RecyclerView.Adapter<SmartAgentAdapter.My
         n = generator.nextInt(n);
         String fname = "Image-" + n + ".jpg";
         File file = new File(myDir, fname);
+
         if (file.exists())
             file.delete();
         try {
             FileOutputStream out = new FileOutputStream(file);
             finalBitmap.compress(Bitmap.CompressFormat.JPEG, 90, out);
+            length = file.length();
+            length = length/1024;
+
+            System.out.println("file_length is"+length);
+
+
+
+
             out.flush();
             out.close();
         }
@@ -233,9 +256,13 @@ public class SmartAgentAdapter extends RecyclerView.Adapter<SmartAgentAdapter.My
                 new MediaScannerConnection.OnScanCompletedListener() {
                     public void onScanCompleted(String path, Uri uri) {
 
+
+                        imagepath=path;
+
                         System.out.println("path_is"+path);
 
-                        Toast.makeText(context,path,Toast.LENGTH_LONG).show();
+
+                        Toast.makeText(mcontext,path,Toast.LENGTH_LONG).show();
 
                         Log.i("ExternalStorage", "Scanned " + path + ":");
                         Log.i("ExternalStorage", "-> uri=" + uri);
@@ -287,6 +314,7 @@ public class SmartAgentAdapter extends RecyclerView.Adapter<SmartAgentAdapter.My
             //create a new file, to save the downloaded file
             File file = new File(mediaStorageDir,"downloaded_file.mp4");
 
+
             FileOutputStream fileOutput = new FileOutputStream(file);
 
             //Stream used for reading the data from the internet
@@ -296,10 +324,12 @@ public class SmartAgentAdapter extends RecyclerView.Adapter<SmartAgentAdapter.My
            int totalSize = urlConnection.getContentLength();
 
 
-           if(totalSize == 0){
 
-               Toast.makeText(mcontext,"downloaded file does not match",Toast.LENGTH_SHORT).show();
-           }
+            length1=file.length();
+            length1=length1/1024;
+
+
+            System.out.println("length1"+length1);
 
 
             //create a buffer...
